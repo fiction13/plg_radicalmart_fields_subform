@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   plg_radicalmart_fields_subform
+  ~ @version   1.0.0
+  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
+  ~ @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
+  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+  ~ @link      https://fictionlabs.ru/
+  -->
+
+<form>
+    <fieldset name="content">
+        <fields name="params">
+            <field
+                    name="fields"
+                    type="subform"
+                    formsource="/plugins/radicalmart_fields/subform/config/subform_j3.xml"
+                    label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDS"
+                    description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDS_DESC"
+                    multiple="true">
+            </field>
+        </fields>
+    </fieldset>
+
+    <fieldset name="display" label="COM_RADICALMART_DISPLAY">
+        <fields name="params" addfieldpath="/plugins/radicalmart_fields/subform/fields">
+            <field name="display_product" type="radio"
+                   label="COM_RADICALMART_FIELD_DISPLAY_PRODUCT"
+                   class="btn-group btn-group-yesno"
+                   default="1">
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
+            <field name="display_product_as" type="subformlayout"
+                   label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_DISPLAY_PRODUCT_AS"
+                   default="string"
+                   class="input-xlarge"
+                   showon="display_product:1"
+                   sublayout="display"/>
+            <field name="display_products" type="radio"
+                   label="COM_RADICALMART_FIELD_DISPLAY_PRODUCTS"
+                   class="btn-group btn-group-yesno"
+                   default="1">
+                <option value="1">JYES</option>
+                <option value="0">JNO</option>
+            </field>
+            <field name="display_products_as" type="subformlayout"
+                   label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_DISPLAY_PRODUCTS_AS"
+                   default="string"
+                   class="input-xlarge"
+                   showon="display_products:1"
+                   sublayout="display"/>
+        </fields>
+    </fieldset>
+</form>

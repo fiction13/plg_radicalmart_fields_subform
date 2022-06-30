@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   plg_radicalmart_fields_subform
+  ~ @version   1.0.0
+  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
+  ~ @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
+  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+  ~ @link      https://fictionlabs.ru/
+  -->
+
+
+<form>
+	<fields>
+		<fieldset>
+			<field
+				name="name"
+				type="text"
+				label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_NAME"
+				description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_NAME_DESC"
+				required="true"
+			/>
+			<field
+				name="type"
+				type="list"
+				label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE"
+				description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_DESC"
+				>
+				<option value="editor">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_EDITOR</option>
+				<option value="media">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_MEDIA</option>
+				<option value="number">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_NUMBER</option>
+				<option value="text">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_TEXT</option>
+				<option value="textarea">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_TEXTAREA</option>
+			</field>
+			<field
+				name="filter"
+				type="list"
+				label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FILTER"
+				description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FILTER_DESC"
+				class="btn-group"
+				validate="options"
+				showon="type!:media,number"
+				>
+				<option value="0">JNO</option>
+				<option
+					showon="type:editor,text,textarea"
+					value="raw">JLIB_FILTER_PARAMS_RAW</option>
+				<option
+					showon="type:editor,text,textarea"
+					value="safehtml">JLIB_FILTER_PARAMS_SAFEHTML</option>
+				<option
+					showon="type:editor,text,textarea"
+					value="JComponentHelper::filterText">JLIB_FILTER_PARAMS_TEXT</option>
+				<option
+					showon="type:text,textarea"
+					value="alnum">JLIB_FILTER_PARAMS_ALNUM</option>
+				<option
+					showon="fieldtype:text,textarea"
+					value="integer">JLIB_FILTER_PARAMS_INTEGER</option>
+				<option
+					showon="type:text,textarea"
+					value="float">JLIB_FILTER_PARAMS_FLOAT</option>
+				<option
+					showon="type:text,textarea"
+					value="tel">JLIB_FILTER_PARAMS_TEL</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>
