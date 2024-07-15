@@ -24,7 +24,7 @@ extract($displayData);
 ?>
 
 <?php if (!empty($values)) : ?>
-    <ul class="uk-grid-width-1-3@s" uk-grid>
+    <ul class="uk-grid-width-1-3@s" data-uk-grid>
         <?php foreach ($values as $value) : ?>
 
             <?php if ($value) : ?>

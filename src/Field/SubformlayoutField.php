@@ -1,4 +1,5 @@
-<?php
+<?php namespace Joomla\Plugin\RadicalmartFields\Subform\Field;
+
 /*
  * @package   plg_radicalmart_fields_subform
  * @version   1.0.0
@@ -19,7 +20,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-class JFormFieldSubformlayout extends FormField
+class SubformlayoutField extends FormField
 {
     /**
      * The form field type.
@@ -191,4 +192,5 @@ class JFormFieldSubformlayout extends FormField
 			return '';
 		}
 	}
+
 }

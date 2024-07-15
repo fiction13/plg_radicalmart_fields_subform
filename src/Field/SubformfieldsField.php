@@ -1,4 +1,5 @@
-<?php
+<?php namespace Joomla\Plugin\RadicalmartFields\Subform\Field;
+
 /*
  * @package   plg_radicalmart_fields_subform
  * @version   1.0.0
@@ -11,12 +12,10 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\Registry\Registry;
 
-FormHelper::loadFieldClass('list');
-
-class JFormFieldSubformFields extends JFormFieldList
+class SubformfieldsField extends ListField
 {
 	/**
 	 * The form field type.
@@ -95,7 +94,7 @@ class JFormFieldSubformFields extends JFormFieldList
 			$query = $db->getQuery(true)
 				->select(array('f.id', 'f.alias', 'f.title', 'f.plugin', 'f.params', 'f.plugins'))
 				->from($db->quoteName('#__radicalmart_fields', 'f'))
-				->order($db->escape('f.ordering') . ' ' . $db->escape('asc'));
+				->order($db->escape('f.ordering') . ' subformfields.php' . $db->escape('asc'));
 			$items = $db->setQuery($query)->loadObjectList('id');
 
 			// Check admin type view
@@ -136,4 +135,5 @@ class JFormFieldSubformFields extends JFormFieldList
 
 		return $this->_options;
 	}
+
 }

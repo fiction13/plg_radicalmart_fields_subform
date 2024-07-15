@@ -8,7 +8,7 @@
   ~ @link      https://fictionlabs.ru/
   -->
 
-<extension version="3.9" type="plugin" group="radicalmart_fields" method="upgrade">
+<extension type="plugin" group="radicalmart_fields" method="upgrade">
 	<name>PLG_RADICALMART_FIELDS_SUBFORM</name>
 	<creationDate>June 2022</creationDate>
     <author>Dmitriy Vasyukov</author>
@@ -16,8 +16,9 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>info@fictionlabs.ru</authorEmail>
     <authorUrl>https://fictionlabs.ru</authorUrl>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <description>PLG_RADICALMART_FIELDS_SUBFORM_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\RadicalmartFields\Subform</namespace>
 	<scriptfile>script.php</scriptfile>
 
 	<!-- Plugin languages -->
@@ -30,9 +31,9 @@
 
 	<!-- Plugin files -->
 	<files>
-		<filename plugin="subform">subform.php</filename>
-		<folder>config</folder>
-		<folder>fields</folder>
+		<folder plugin="subform">src</folder>
+		<folder>forms</folder>
+		<folder>services</folder>
 	</files>
 
 	<!-- Plugin layouts -->
