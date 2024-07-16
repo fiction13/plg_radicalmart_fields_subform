@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 
 use Exception;
+use JLoader;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -134,7 +135,20 @@ class Subform extends CMSPlugin
         $fieldNode->addAttribute('label', $field->title);
         $fieldNode->addAttribute('type', 'subform');
         $fieldNode->addAttribute('multiple', 'true');
-        $fieldNode->addAttribute('layout', 'joomla.form.field.subform.repeatable');
+
+        // Сделано именно тут соответствие, если в дальнейшем менять шаблоны и расширять, чтобы не слетали xml настройки, а тут карты перестраивать
+        $layout_params = $field->params->get('layout', 'list');
+        $layout_field = '';
+
+        if ($layout_params === 'list') {
+            $layout_field = 'joomla.form.field.subform.repeatable';
+        }
+
+        if ($layout_params === 'table') {
+            $layout_field = 'joomla.form.field.subform.repeatable-table';
+        }
+
+        $fieldNode->addAttribute('layout', $layout_field);
 
         // Build the form source
         $fieldsXml = new SimpleXMLElement('<form/>');
@@ -145,21 +159,11 @@ class Subform extends CMSPlugin
 
         // Add the fields to the form
         foreach ($formFields as $index => $formField) {
-            // For subform J4
-            // JLoader::register('RadicalMartHelperPlugins', JPATH_ADMINISTRATOR . '/com_radicalmart/helpers/plugins.php');
-            // JLoader::register('RadicalMartHelperFields', JPATH_ADMINISTRATOR . '/com_radicalmart/helpers/fields.php');
-            // $field = RadicalMartHelperFields::getFields($formField->customfield);
 
-            // if (!$field) continue;
-            // $field = array_shift($field);
-            // $parentNode = RadicalMartHelperPlugins::triggerPlugin('radicalmart_fields', $field->plugin, 'onRadicalMartGetProductFieldXml', array($context, $field, null));
-            // $this->simpleXMLAppend($fieldsXml, $parentNode);
-
-            // Old subform version for J3
             $child = $fields->addChild('field');
             $child->addAttribute('name', $formField->name);
             $child->addAttribute('type', $formField->type);
-            $child->addAttribute('label', $formField->name);
+            $child->addAttribute('label', !empty($formField->label) ? $formField->label : $formField->name);
 
             if (isset($formField->fieldfilter)) {
                 $child->addAttribute('filter', $formField->fieldfilter);

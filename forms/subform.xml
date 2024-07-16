@@ -12,12 +12,29 @@
     <fieldset name="content">
         <fields name="params">
             <field
+                    name="layout"
+                    type="list"
+                    label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_LAYOUT"
+                    description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_LAYOUT_DESC"
+            >
+                <option value="">JSELECT</option>
+                <option value="list">List</option>
+                <option value="table">Table</option>
+            </field>
+            <field
                     name="fields"
                     type="subform"
                     label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDS"
                     description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDS_DESC"
                     multiple="true">
                 <form>
+                    <field
+                            name="label"
+                            type="text"
+                            label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_LABEL"
+                            description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_LABEL_DESC"
+                            required="true"
+                    />
                     <field
                             name="name"
                             type="text"
@@ -36,6 +53,7 @@
                         <option value="number">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_NUMBER</option>
                         <option value="text">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_TEXT</option>
                         <option value="textarea">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_TEXTAREA</option>
+                        <option value="custom">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_CUSTOM</option>
                     </field>
                     <field
                             name="filter"
