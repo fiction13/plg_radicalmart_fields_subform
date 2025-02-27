@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ @package   plg_radicalmart_fields_subform
-  ~ @version   1.0.0
+  ~ @version   1.1.0
   ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
   ~ @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
   ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
@@ -14,7 +14,7 @@
             <field
                     name="fields"
                     type="subform"
-                    formsource="/plugins/radicalmart_fields/subform/config/subform_j3.xml"
+                    formsource="/plugins/radicalmart_fields/subform/config/subform.xml"
                     label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDS"
                     description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDS_DESC"
                     multiple="true">
@@ -22,8 +22,9 @@
         </fields>
     </fieldset>
 
-    <fieldset name="display" label="COM_RADICALMART_DISPLAY">
-        <fields name="params" addfieldpath="/plugins/radicalmart_fields/subform/fields">
+    <fieldset name="display_product" label="COM_RADICALMART_PARAMS_FIELD_DISPLAY_PRODUCT"
+              addfieldprefix="Joomla\Plugin\RadicalmartFields\Subform\Field">
+        <fields name="params">
             <field name="display_product" type="radio"
                    label="COM_RADICALMART_FIELD_DISPLAY_PRODUCT"
                    class="btn-group btn-group-yesno"
@@ -31,12 +32,17 @@
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
-            <field name="display_product_as" type="subformlayout"
+            <field name="display_product_as" type="pluginlayout"
                    label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_DISPLAY_PRODUCT_AS"
-                   default="string"
-                   class="input-xlarge"
+                   class="form-select"
+                   default="default"
                    showon="display_product:1"
-                   sublayout="display"/>
+                   layout="joomla.form.field.list-fancy-select"/>
+        </fields>
+    </fieldset>
+
+    <fieldset name="display_products" label="COM_RADICALMART_PARAMS_FIELD_DISPLAY_PRODUCTS">
+        <fields name="params">
             <field name="display_products" type="radio"
                    label="COM_RADICALMART_FIELD_DISPLAY_PRODUCTS"
                    class="btn-group btn-group-yesno"
@@ -44,12 +50,12 @@
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
-            <field name="display_products_as" type="subformlayout"
+            <field name="display_products_as" type="pluginlayout"
                    label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_DISPLAY_PRODUCTS_AS"
-                   default="string"
-                   class="input-xlarge"
+                   class="form-select"
+                   default="default"
                    showon="display_products:1"
-                   sublayout="display"/>
+                   layout="joomla.form.field.list-fancy-select"/>
         </fields>
     </fieldset>
 </form>

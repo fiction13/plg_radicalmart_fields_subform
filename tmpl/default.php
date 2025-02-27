@@ -1,7 +1,7 @@
 <?php
 /*
  * @package   plg_radicalmart_fields_subform
- * @version   1.0.0
+ * @version   1.1.0
  * @author    Dmitriy Vasyukov - https://fictionlabs.ru
  * @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
  * @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
@@ -10,26 +10,15 @@
 
 defined('_JEXEC') or die;
 
-extract($displayData);
-
-/**
- * Layout variables
- * -----------------
- *
- * @var  object $field Field data object.
- * @var  array $values
- *
- */
-
 ?>
 
-<?php if (!empty($values)) : ?>
+<?php if (!empty($value)) : ?>
     <ul class="uk-list uk-margin-remove">
-        <?php foreach ($values as $value) : ?>
+        <?php foreach ($value as $vals) : ?>
 
-            <?php if ($value) : ?>
+            <?php if ($vals) : ?>
                 <li>
-                    <?php foreach ($value as $val) : ?>
+                    <?php foreach ($vals as $val) : ?>
                         <div>
                             <?php echo $val; ?>
                         </div>

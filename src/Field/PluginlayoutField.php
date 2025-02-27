@@ -1,12 +1,14 @@
 <?php
 /*
- * @package   plg_radicalmart_fields_subform
- * @version   1.0.0
+ * @package   plg_radicalmart_fields_related
+ * @version   1.1.0
  * @author    Dmitriy Vasyukov - https://fictionlabs.ru
  * @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
  * @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  * @link      https://fictionlabs.ru/
  */
+
+namespace Joomla\Plugin\RadicalmartFields\Subform\Field;
 
 defined('_JEXEC') or die;
 
@@ -18,24 +20,25 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
-class JFormFieldSubformlayout extends FormField
+class PluginlayoutField extends FormField
 {
     /**
      * The form field type.
      *
      * @var  string
      *
-     * @since  1.4.0
+     * @since  1.1.0
      */
-    protected $type = 'subformlayout';
+    protected $type = 'PluginLayout';
 
     /**
 	 * Method to get the field input for plugin layouts.
 	 *
 	 * @return  string  The field input.
 	 *
-	 * @since   1.6
+	 * @since   1.1.0
 	 */
 	protected function getInput()
 	{
@@ -51,9 +54,6 @@ class JFormFieldSubformlayout extends FormField
 		// Get the template.
 		$template = (string) $this->element['template'];
 		$template = preg_replace('#\W#', '', $template);
-
-		// Get sublayout
-		$sublayout = $this->element['sublayout'] ? (string) $this->element['sublayout'] : 'display';
 
 		// Get the style.
 		$template_style_id = 0;
@@ -104,7 +104,7 @@ class JFormFieldSubformlayout extends FormField
 			$templates = $db->loadObjectList('element');
 
 			// Build the search paths for plugin layouts.
-			$plugin_path = Path::clean($client->path . '/layouts/plugins/radicalmart_fields/' . $plugin . '/' . $sublayout);
+			$plugin_path = Path::clean($client->path . '/plugins/radicalmart_fields/' . $plugin . '/tmpl');
 
 			// Prepare array of component layouts
 			$plugin_layouts = array();
@@ -118,14 +118,14 @@ class JFormFieldSubformlayout extends FormField
 				// Create the group for the plugin
 				$groups['_'] = array();
 				$groups['_']['id'] = $this->id . '__';
-				$groups['_']['text'] = Text::sprintf('PLG_RADICALMART_FIELDS_SUBFORM_LAYOUT_OPTION');
+				$groups['_']['text'] = Text::sprintf('JGLOBAL_USE_GLOBAL');
 				$groups['_']['items'] = array();
 
 				foreach ($plugin_layouts as $file)
 				{
 					// Add an option to the plugin group
 					$value = basename($file, '.php');
-					$groups['_']['items'][] = HTMLHelper::_('select.option', $value, ucfirst($value));
+					$groups['_']['items'][] = HTMLHelper::_('select.option', '_:' . $value, $value);
 				}
 			}
 
@@ -135,7 +135,7 @@ class JFormFieldSubformlayout extends FormField
 				foreach ($templates as $template)
 				{
 
-					$template_path = Path::clean($client->path . '/templates/' . $template->element . '/html/layouts/plugins/radicalmart_fields/' . $plugin . '/' . $sublayout);
+					$template_path = Path::clean($client->path . '/templates/' . $template->element . '/html/plg_radicalmart_fields_' . $plugin);
 
 					// Add the layout options from the template path.
 					if (is_dir($template_path) && ($files = Folder::files($template_path, '^[^_]*\.php$')))
