@@ -24,19 +24,21 @@ extract($displayData);
 ?>
 
 <?php if (!empty($values)) : ?>
-    <ul class="uk-grid-width-1-3@s" data-uk-grid>
-        <?php foreach ($values as $value) : ?>
+	<div class="row row-cols-1 row-cols-md-3 g-4">
+		<?php foreach ($values as $value) : ?>
 
-            <?php if ($value) : ?>
-                <li>
-                    <?php foreach ($value as $val) : ?>
-                        <div>
-                            <?php echo $val; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </li>
-            <?php endif; ?>
+			<?php if ($value) : ?>
+				<div class="col">
+					<?php foreach ($value as $val) : ?>
+						<div class="card">
+							<div class="card-body">
+								<?php echo $val; ?>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 
-        <?php endforeach; ?>
-    </ul>
+		<?php endforeach; ?>
+	</div>
 <?php endif; ?>

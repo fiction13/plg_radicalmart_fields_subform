@@ -24,19 +24,19 @@ extract($displayData);
 ?>
 
 <?php if (!empty($values)) : ?>
-    <ul class="uk-list uk-margin-remove">
-        <?php foreach ($values as $value) : ?>
+	<ul class="list-unstyled mb-0">
+		<?php foreach ($values as $value) : ?>
 
-            <?php if ($value) : ?>
-                <li>
-                    <?php foreach ($value as $val) : ?>
-                        <div>
-                            <?php echo $val; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </li>
-            <?php endif; ?>
+			<?php if ($value) : ?>
+				<li>
+					<?php foreach ($value as $val) : ?>
+						<div>
+							<?php echo $val; ?>
+						</div>
+					<?php endforeach; ?>
+				</li>
+			<?php endif; ?>
 
-        <?php endforeach; ?>
-    </ul>
+		<?php endforeach; ?>
+	</ul>
 <?php endif; ?>

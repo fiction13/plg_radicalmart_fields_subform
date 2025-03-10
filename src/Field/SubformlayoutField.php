@@ -1,4 +1,4 @@
-<?php namespace Joomla\Plugin\RadicalmartFields\Subform\Field;
+<?php namespace Joomla\Plugin\RadicalMartFields\Subform\Field;
 
 /*
  * @package   plg_radicalmart_fields_subform
@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -69,7 +70,7 @@ class SubformlayoutField extends FormField
 		if ($plugin && $client)
 		{
 			// Get the database object and a new query object.
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			// Build the query.

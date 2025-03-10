@@ -1,4 +1,4 @@
-<?php namespace Joomla\Plugin\RadicalmartFields\Subform\Field;
+<?php namespace Joomla\Plugin\RadicalMartFields\Subform\Field;
 
 /*
  * @package   plg_radicalmart_fields_subform
@@ -11,9 +11,12 @@
 
 defined('_JEXEC') or die;
 
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\Registry\Registry;
+use Joomla\Database\DatabaseInterface;
+use SimpleXMLElement;
 use stdClass;
 
 class SubformfieldsField extends ListField
@@ -65,80 +68,62 @@ class SubformfieldsField extends ListField
      *
      * @since  1.0.0
      */
-    public function setup(SimpleXMLElement $element, $value, $group = null)
-    {
-        if ($return = parent::setup($element, $value, $group)) {
-            $this->key = (!empty($this->element['key'])) ? (string)$this->element['key']
-                : $this->key;
-            $this->trigger = (!empty($this->element['trigger'])) ? (string)$this->element['trigger']
-                : $this->trigger;
-        }
-
-        return $return;
-    }
+	public function setup(SimpleXMLElement $element, mixed $value, ?string $group = null): bool
+	{
+		if ($return = parent::setup($element, $value, $group)) {
+			$this->key = !empty($this->element['key']) ? (string) $this->element['key'] : $this->key;
+			$this->trigger = !empty($this->element['trigger']) ? (string) $this->element['trigger'] : $this->trigger;
+		}
+		return $return;
+	}
 
     /**
      * Method to get the field options.
      *
-     * @return  array  The field option objects.
+     * @throws  Exception|\Exception
      *
-     * @throws  Exception
+     * @return  array  The field option objects.
      *
      * @since  1.0.0
      */
-    protected function getOptions()
-    {
-        if ($this->_options === null) {
-            $db = Factory::getDbo();
-            $query = $db->getQuery(true)
-                ->select(array('f.id', 'f.alias', 'f.title', 'f.plugin', 'f.params', 'f.plugins'))
-                ->from($db->quoteName('#__radicalmart_fields', 'f'))
-                ->order($db->escape('f.ordering') . ' subformfields.php' . $db->escape('asc'));
-            $items = $db->setQuery($query)->loadObjectList('id');
+	protected function getOptions(): array
+	{
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true)
+			->select(['id', 'alias', 'title', 'plugin', 'params', 'plugins'])
+			->from($db->quoteName('#__radicalmart_fields'))
+			->order($db->quoteName('ordering') . ' ASC');
+		$items = $db->setQuery($query)->loadObjectList('id');
 
-            // Check admin type view
-            $app = Factory::getApplication();
-            $component = $app->input->get('option', 'com_radicalmart');
-            $view = $app->input->get('view', 'field');
-            $id = $app->input->getInt('id', 0);
-            $sameView = ($app->isClient('administrator') && $component == 'com_radicalmart' && $view == 'field');
-            $key = $this->key;
+		$app = Factory::getApplication();
+		$component = $app->input->get('option', 'com_radicalmart');
+		$view = $app->input->get('view', 'field');
+		$id = $app->input->getInt('id', 0);
+		$sameView = ($app->isClient('administrator') && $component === 'com_radicalmart' && $view === 'field');
 
-            // Prepare options
-            $options = parent::getOptions();
-            foreach ($items as $i => $item) {
-                $option = new stdClass();
-                $option->value = $item->$key;
-                $option->text = $item->title;
-                $option->disable = ($sameView && $item->id == $id);
+		$options = parent::getOptions();
+		foreach ($items as $item) {
+			if ($item->plugin === 'subform') {
+				continue;
+			}
 
-                if ($this->trigger) {
-                    if (empty($item->plugin)) {
-                        continue;
-                    }
+			$option = new stdClass();
+			$option->value = $item->{$this->key};
+			$option->text = $item->title;
+			$option->disable = ($sameView && $item->id === $id);
 
-                    $item->params = new Registry($item->params);
-                    $item->plugins = new Registry($item->plugins);
+			if ($this->trigger && !empty($item->plugin)) {
+				$item->params = new Registry($item->params);
+				$item->plugins = new Registry($item->plugins);
+				if (!RadicalMartHelperPlugins::triggerPlugin('radicalmart_fields', $item->plugin, $this->trigger, [&$option, $item])) {
+					continue;
+				}
+			}
 
-                    $result = RadicalMartHelperPlugins::triggerPlugin('radicalmart_fields', $item->plugin, $this->trigger,
-                        [&$option, $item]);
+			$options[] = $option;
+		}
 
-                    if (!$result) {
-                        continue;
-                    }
-                }
-
-                if ($item->plugin == 'subform') {
-                    continue;
-                }
-
-                $options[] = $option;
-            }
-
-            $this->_options = $options;
-        }
-
-        return $this->_options;
-    }
+		return $options;
+	}
 
 }

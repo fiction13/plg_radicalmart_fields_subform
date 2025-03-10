@@ -1,4 +1,4 @@
-<?php namespace Joomla\Plugin\RadicalmartFields\Subform\Extension;
+<?php namespace Joomla\Plugin\RadicalMartFields\Subform\Extension;
 
 /*
  * @package   plg_radicalmart_fields_subform
@@ -11,13 +11,13 @@
 
 defined('_JEXEC') or die;
 
-use Exception;
-use JLoader;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseQuery;
 use Joomla\Registry\Registry;
 use SimpleXMLElement;
 
@@ -35,7 +35,7 @@ class Subform extends CMSPlugin
     /**
      * Loads the database object.
      *
-     * @var  JDatabaseDriver
+     * @var  DatabaseDriver
      *
      * @since  1.0.0
      */
@@ -59,43 +59,22 @@ class Subform extends CMSPlugin
      *
      * @since  1.0.0
      */
-    public function onRadicalMartGetFieldForm($context = null, $form = null, $tmpData = null)
+    public function onRadicalMartGetFieldForm(string $context, Form $form, Registry $tmpData): void
     {
-        if (
-            $context !== 'com_radicalmart.field' ||
-            $tmpData->get('plugin') !== 'subform'
-        ) {
-            return;
-        }
+	    if ($context !== 'com_radicalmart.field' || $tmpData->get('plugin') !== 'subform') {
+		    return;
+	    }
 
-        Form::addFormPath(implode(DIRECTORY_SEPARATOR, [JPATH_PLUGINS, 'radicalmart_fields', 'subform', 'forms']));
-        $form->loadFile('subform');
+	    $form->addFormPath(JPATH_PLUGINS . '/radicalmart_fields/subform/forms');
+	    $form->loadFile('subform');
 
         // Remove from filter
-        $form->setFieldAttribute('display_filter', 'type', 'hidden', 'params');
-        $form->setValue('display_filter', 'params', 0);
+	    $form->setFieldAttribute('display_filter', 'type', 'hidden', 'params');
+	    $form->setValue('display_filter', 'params', 0);
 
         // Remove from variability
-        $form->setFieldAttribute('display_variability', 'type', 'hidden', 'params');
-        $form->setValue('display_variability', 'params', 0);
-    }
-
-    /**
-     * Prepare options data.
-     *
-     * @param string $context Context selector string.
-     * @param object $objData Input data.
-     * @param Form $form Joomla Form object.
-     *
-     * @throws  Exception
-     *
-     * @since  1.0.0
-     */
-    public function onContentNormaliseRequestData($context, $objData, $form)
-    {
-        if ($context === 'com_radicalmart.field') {
-            // noop
-        }
+	    $form->setFieldAttribute('display_variability', 'type', 'hidden', 'params');
+	    $form->setValue('display_variability', 'params', 0);
     }
 
     /**
@@ -109,71 +88,57 @@ class Subform extends CMSPlugin
      *
      * @since  1.0.0
      */
-    public function onRadicalMartGetProductFieldXml($context = null, $field = null, $tmpData = null)
-    {
-        if (
-            $context !== 'com_radicalmart.product' ||
-            $field->plugin !== 'subform'
-        ) {
-            return;
-        }
+	public function onRadicalMartGetProductFieldXml(string $context, object $field, Registry $tmpData): false|SimpleXMLElement
+	{
+		if ($context !== 'com_radicalmart.product' || $field->plugin !== 'subform') {
+			return false;
+		}
 
-        Factory::getDocument()->addScriptDeclaration('
-	            document.addEventListener("DOMContentLoaded", function(event) {
-	                let subformContainer = document.querySelector(\'input[name="jform[fields][' . $field->alias . ']"]\').parentElement.parentElement;
-	                let subformLabel     = subformContainer.querySelector(\'.control-label\');
-	                
-	                subformLabel.classList.add(\'fw-bold\');
-	                subformLabel.classList.add(\'mb-2\');
-	                subformLabel.classList.remove(\'control-label\');
-	                subformContainer.querySelector(\'.controls\').classList.remove(\'controls\');
-	            });
-	        ');
+		Factory::getApplication()->getDocument()->addScriptDeclaration(
+			"document.addEventListener('DOMContentLoaded', function() {
+                let subformContainer = document.querySelector('input[name=\"jform[fields][" . $field->alias . "]\"]')?.closest('.form-group');
+                if (subformContainer) {
+                    let subformLabel = subformContainer.querySelector('label');
+                    if (subformLabel) {
+                        subformLabel.classList.add('fw-bold', 'mb-2');
+                    }
+                }
+            });"
+		);
 
-        $fieldNode = new SimpleXMLElement('<field />');
-        $fieldNode->addAttribute('name', $field->alias);
-        $fieldNode->addAttribute('label', $field->title);
-        $fieldNode->addAttribute('type', 'subform');
-        $fieldNode->addAttribute('multiple', 'true');
+		$fieldNode = new SimpleXMLElement('<field />');
+		$fieldNode->addAttribute('name', $field->alias);
+		$fieldNode->addAttribute('label', $field->title);
+		$fieldNode->addAttribute('type', 'subform');
+		$fieldNode->addAttribute('multiple', 'true');
+//		$fieldNode->addAttribute('full_width', 'true');
 
-        // Сделано именно тут соответствие, если в дальнейшем менять шаблоны и расширять, чтобы не слетали xml настройки, а тут карты перестраивать
-        $layout_params = $field->params->get('layout', 'list');
-        $layout_field = '';
+		$layout_field = match ($field->params->get('layout', 'list')) {
+			'list' => 'joomla.form.field.subform.repeatable',
+			'table' => 'joomla.form.field.subform.repeatable-table',
+			default => 'joomla.form.field.subform.repeatable',
+		};
 
-        if ($layout_params === 'list') {
-            $layout_field = 'joomla.form.field.subform.repeatable';
-        }
+		$fieldNode->addAttribute('layout', $layout_field);
 
-        if ($layout_params === 'table') {
-            $layout_field = 'joomla.form.field.subform.repeatable-table';
-        }
+		$fieldsXml = new SimpleXMLElement('<form/>' );
+		$fields = $fieldsXml->addChild('fields');
 
-        $fieldNode->addAttribute('layout', $layout_field);
+		$formFields = json_decode(json_encode($field->params->get('fields')), true) ?? [];
 
-        // Build the form source
-        $fieldsXml = new SimpleXMLElement('<form/>');
-        $fields = $fieldsXml->addChild('fields');
+		foreach ($formFields as $formField) {
+			$child = $fields->addChild('field');
+			$child->addAttribute('name', (string) $formField['name']);
+			$child->addAttribute('type', (string) $formField['type']);
+			$child->addAttribute('label', (string) $formField['label']);
+			if (!empty($formField['filter'])) {
+				$child->addAttribute('filter', (string) $formField['filter']);
+			}
+		}
 
-        // Get the form settings
-        $formFields = $field->params->get('fields');
-
-        // Add the fields to the form
-        foreach ($formFields as $index => $formField) {
-
-            $child = $fields->addChild('field');
-            $child->addAttribute('name', $formField->name);
-            $child->addAttribute('type', $formField->type);
-            $child->addAttribute('label', !empty($formField->label) ? $formField->label : $formField->name);
-
-            if (isset($formField->fieldfilter)) {
-                $child->addAttribute('filter', $formField->fieldfilter);
-            }
-        }
-
-        $fieldNode->addAttribute('formsource', $fieldsXml->asXML());
-
-        return $fieldNode;
-    }
+		$fieldNode->addAttribute('formsource', $fieldsXml->asXML());
+		return $fieldNode;
+	}
 
     /**
      * @param SimpleXMLElement $to
@@ -230,7 +195,7 @@ class Subform extends CMSPlugin
      * Method to modify query.
      *
      * @param string $context Context selector string.
-     * @param JDatabaseQuery $query JDatabaseQuery  A JDatabaseQuery object to retrieve the data set
+     * @param DatabaseQuery $query DatabaseQuery  A DatabaseQuery object to retrieve the data set
      * @param object $field Field data object.
      * @param array|string $value Value.
      *
@@ -310,17 +275,14 @@ class Subform extends CMSPlugin
      *
      * @since  1.0.0
      */
-    protected function getFieldValue($field = null, $value = null, $layout = 'list')
-    {
-        if (empty($field) || empty($value)) {
-            return false;
-        }
-
-        if (!is_array($value)) $value = array($value);
-
-        return LayoutHelper::render('plugins.radicalmart_fields.subform.display.' . $layout, [
-            'field' => $field, 'values' => $value]);
-    }
+	protected function getFieldValue(object $field, array|string $value, string $layout = 'list'): string|false
+	{
+		if (empty($field) || empty($value)) {
+			return false;
+		}
+		$value = (array) $value;
+		return LayoutHelper::render('plugins.radicalmart_fields.subform.display.' . $layout, ['field' => $field, 'values' => $value]);
+	}
 
     /**
      * Method to get clean file path.

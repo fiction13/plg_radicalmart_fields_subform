@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ @package   plg_radicalmart_fields_subform
-  ~ @version   1.0.0
-  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
-  ~ @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
-  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
-  ~ @link      https://fictionlabs.ru/
-  -->
 
 <extension type="plugin" group="radicalmart_fields" method="upgrade">
 	<name>PLG_RADICALMART_FIELDS_SUBFORM</name>
@@ -18,15 +10,15 @@
     <authorUrl>https://fictionlabs.ru</authorUrl>
     <version>1.1.0</version>
     <description>PLG_RADICALMART_FIELDS_SUBFORM_DESCRIPTION</description>
-	<namespace path="src">Joomla\Plugin\RadicalmartFields\Subform</namespace>
+	<namespace path="src">Joomla\Plugin\RadicalMartFields\Subform</namespace>
 	<scriptfile>script.php</scriptfile>
 
 	<!-- Plugin languages -->
 	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_radicalmart_fields_subform.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_radicalmart_fields_subform.sys.ini</language>
-		<language tag="ru-RU">ru-RU/ru-RU.plg_radicalmart_fields_subform.ini</language>
-		<language tag="ru-RU">ru-RU/ru-RU.plg_radicalmart_fields_subform.sys.ini</language>
+		<language tag="en-GB">en-GB/plg_radicalmart_fields_subform.ini</language>
+		<language tag="en-GB">en-GB/plg_radicalmart_fields_subform.sys.ini</language>
+		<language tag="ru-RU">ru-RU/plg_radicalmart_fields_subform.ini</language>
+		<language tag="ru-RU">ru-RU/plg_radicalmart_fields_subform.sys.ini</language>
 	</languages>
 
 	<!-- Plugin files -->
