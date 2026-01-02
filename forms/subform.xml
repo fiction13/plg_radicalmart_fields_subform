@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   RadicalMart Fields - Subform
+  ~ @version   1.2.0
+  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
+  ~ @copyright Copyright (c) 2024 Fictionlabs. All rights reserved.
+  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+  ~ @link      https://fictionlabs.ru/
+  -->
 
 <form addfieldprefix="Joomla\Plugin\RadicalMartFields\Subform\Field">
     <fieldset name="content">

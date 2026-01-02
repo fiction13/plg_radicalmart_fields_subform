@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ @package   RadicalMart Fields - Subform
-  ~ @version   __DEPLOY_VERSION__
+  ~ @version   1.2.0
   ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
   ~ @copyright Copyright (c) 2024 Fictionlabs. All rights reserved.
   ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
@@ -10,13 +10,13 @@
 
 <extension type="plugin" group="radicalmart_fields" method="upgrade">
 	<name>PLG_RADICALMART_FIELDS_SUBFORM</name>
-	<creationDate>June 2022</creationDate>
+	<creationDate>January 2026</creationDate>
     <author>Dmitriy Vasyukov</author>
     <copyright>Copyright (C) 2005 - 2025 Open Source Matters. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>info@fictionlabs.ru</authorEmail>
     <authorUrl>https://fictionlabs.ru</authorUrl>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <description>PLG_RADICALMART_FIELDS_SUBFORM_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\RadicalMartFields\Subform</namespace>
 	<scriptfile>script.php</scriptfile>

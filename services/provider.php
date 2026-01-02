@@ -2,7 +2,7 @@
 
 /*
  * @package   plg_radicalmart_fields_subform
- * @version   1.0.0
+ * @version   1.2.0
  * @author    Dmitriy Vasyukov - https://fictionlabs.ru
  * @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
  * @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
@@ -24,7 +24,7 @@ return new class implements ServiceProviderInterface {
      *
      * @param   Container  $container  The DI container.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   1.2.0
      */
     public function register(Container $container)
     {

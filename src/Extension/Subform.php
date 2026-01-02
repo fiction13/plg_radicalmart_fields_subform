@@ -2,7 +2,7 @@
 
 /*
  * @package   plg_radicalmart_fields_subform
- * @version   1.0.0
+ * @version   1.2.0
  * @author    Dmitriy Vasyukov - https://fictionlabs.ru
  * @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
  * @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
@@ -60,7 +60,7 @@ class Subform extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @return  array
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   1.2.0
 	 */
 	public static function getSubscribedEvents(): array
 	{
@@ -83,7 +83,7 @@ class Subform extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @throws  \Exception
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  1.2.0
 	 */
 	public function onContentNormaliseRequestData(mixed $event): void
 	{
@@ -109,7 +109,7 @@ class Subform extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @throws  \Exception
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  1.2.0
 	 */
 	public function onContentPrepareForm(mixed $event): void
 	{
@@ -149,7 +149,7 @@ class Subform extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @return string|false Field type constant on success, False on failure.
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  1.2.0
 	 */
 	public function onRadicalMartGetFieldType($context = null, $item = null)
 	{
@@ -245,7 +245,7 @@ class Subform extends CMSPlugin implements SubscriberInterface
 	 * @param   Form|null      $form     Form object.
 	 * @param   Registry|null  $tmpData  Temporary form data.
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  1.2.0
 	 */
 	public function onRadicalMartAfterGetFieldForm(string $context = null, Form $form = null, Registry $tmpData = null)
 	{
@@ -373,7 +373,7 @@ class Subform extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @return Registry
 	 *
-	 * @since __DEPLOY_VERSION__
+	 * @since 1.2.0
 	 */
 	public function normaliseParams($params)
 	{
