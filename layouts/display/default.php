@@ -16,27 +16,26 @@ extract($displayData);
  * Layout variables
  * -----------------
  *
- * @var  object $field Field data object.
- * @var  array $values
+ * @var  object $field  Field data object.
+ * @var  array  $values Array of values
+ * @var  array  $labels Array of labels
  *
  */
 
 ?>
 
 <?php if (!empty($values)) : ?>
-	<ul class="list-unstyled mb-0">
+    <ul class="list-unstyled mb-0">
 		<?php foreach ($values as $value) : ?>
-
 			<?php if ($value) : ?>
-				<li>
-					<?php foreach ($value as $val) : ?>
-						<div>
-							<?php echo $val; ?>
-						</div>
+                <li>
+					<?php foreach ($value as $key => $val) : ?>
+                        <div>
+							<?php echo $labels[$key] . ': ' ?? ''?><?php echo $val; ?>
+                        </div>
 					<?php endforeach; ?>
-				</li>
+                </li>
 			<?php endif; ?>
-
 		<?php endforeach; ?>
-	</ul>
+    </ul>
 <?php endif; ?>

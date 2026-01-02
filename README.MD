@@ -1,10 +1,5 @@
-# Плагин полей RadicalMart Field Subform для CMS Joomla
+RadicalMart Field Subform - плагин конструктора повторяемого поля для компонента RadicalMart CMS Joomla.
 
-### 1. Что это?
-RadicalMart Field Subform - плагин конструктора повторяемого поля для компонента RadicalMart.
+Joomla 6+
 
-### 2. Версии Joomla
-Плагин для версий Joomla 4.2+.
-
-## Лицензия
-GNU GPL v2.0 or later. [Подробнее](https://github.com/ficion13/plg_radicalmart_fields_repeatable/blob/master/LICENSE)
+Radicalmart 3+

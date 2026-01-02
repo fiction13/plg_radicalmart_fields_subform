@@ -1,50 +1,42 @@
-<?php namespace Joomla\Plugin\RadicalMartFields\Subform\Field;
+<?php namespace Joomla\Plugin\RadicalmartFields\Subform\Field\Subform;
 
 /*
- * @package   plg_radicalmart_fields_related
- * @version   1.1.0
+ * @package   plg_radicalmart_fields_subform
+ * @version   1.0.0
  * @author    Dmitriy Vasyukov - https://fictionlabs.ru
  * @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
  * @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  * @link      https://fictionlabs.ru/
  */
 
-namespace Joomla\Plugin\RadicalmartFields\Subform\Field;
-
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
-use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\Database\ParameterType;
 
-<<<<<<<< HEAD:src/Field/SubformlayoutField.php
-class SubformlayoutField extends FormField
-========
-class PluginlayoutField extends FormField
->>>>>>>> 3bd3834 (Refactor):src/Field/PluginlayoutField.php
+class LayoutField extends FormField
 {
-    /**
-     * The form field type.
-     *
-     * @var  string
-     *
-     * @since  1.1.0
-     */
-    protected $type = 'PluginLayout';
+	/**
+	 * The form field type.
+	 *
+	 * @var  string
+	 *
+	 * @since  1.4.0
+	 */
+	protected $type = 'subform_layout';
 
-    /**
+	/**
 	 * Method to get the field input for plugin layouts.
 	 *
 	 * @return  string  The field input.
 	 *
-	 * @since   1.1.0
+	 * @since   1.6
 	 */
 	protected function getInput()
 	{
@@ -61,6 +53,9 @@ class PluginlayoutField extends FormField
 		$template = (string) $this->element['template'];
 		$template = preg_replace('#\W#', '', $template);
 
+		// Get sublayout
+		$sublayout = $this->element['sublayout'] ? (string) $this->element['sublayout'] : 'display';
+
 		// Get the style.
 		$template_style_id = 0;
 
@@ -74,7 +69,7 @@ class PluginlayoutField extends FormField
 		if ($plugin && $client)
 		{
 			// Get the database object and a new query object.
-			$db = Factory::getContainer()->get(DatabaseInterface::class);
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			// Build the query.
@@ -102,7 +97,7 @@ class PluginlayoutField extends FormField
 			if ($template_style_id)
 			{
 				$query->join('LEFT', $db->quoteName('#__template_styles', 's'), $db->quoteName('s.template') . ' = ' . $db->quoteName('e.element'))
-					->where($db->quoteName('s.id') . ' = '. (int) $template_style_id);
+					->where($db->quoteName('s.id') . ' = ' . (int) $template_style_id);
 			}
 
 			// Set the query and load the templates.
@@ -110,7 +105,7 @@ class PluginlayoutField extends FormField
 			$templates = $db->loadObjectList('element');
 
 			// Build the search paths for plugin layouts.
-			$plugin_path = Path::clean($client->path . '/plugins/radicalmart_fields/' . $plugin . '/tmpl');
+			$plugin_path = Path::clean($client->path . '/layouts/plugins/radicalmart_fields/' . $plugin . '/' . $sublayout);
 
 			// Prepare array of component layouts
 			$plugin_layouts = array();
@@ -122,16 +117,16 @@ class PluginlayoutField extends FormField
 			if (is_dir($plugin_path) && ($plugin_layouts = Folder::files($plugin_path, '^[^_]*\.php$')))
 			{
 				// Create the group for the plugin
-				$groups['_'] = array();
-				$groups['_']['id'] = $this->id . '__';
-				$groups['_']['text'] = Text::sprintf('JGLOBAL_USE_GLOBAL');
+				$groups['_']          = array();
+				$groups['_']['id']    = $this->id . '__';
+				$groups['_']['text']  = Text::sprintf('PLG_RADICALMART_FIELDS_SUBFORM_LAYOUT_OPTION');
 				$groups['_']['items'] = array();
 
 				foreach ($plugin_layouts as $file)
 				{
 					// Add an option to the plugin group
-					$value = basename($file, '.php');
-					$groups['_']['items'][] = HTMLHelper::_('select.option', '_:' . $value, $value);
+					$value                  = basename($file, '.php');
+					$groups['_']['items'][] = HTMLHelper::_('select.option', $value, ucfirst($value));
 				}
 			}
 
@@ -141,7 +136,7 @@ class PluginlayoutField extends FormField
 				foreach ($templates as $template)
 				{
 
-					$template_path = Path::clean($client->path . '/templates/' . $template->element . '/html/plg_radicalmart_fields_' . $plugin);
+					$template_path = Path::clean($client->path . '/templates/' . $template->element . '/html/layouts/plugins/radicalmart_fields/' . $plugin . '/' . $sublayout);
 
 					// Add the layout options from the template path.
 					if (is_dir($template_path) && ($files = Folder::files($template_path, '^[^_]*\.php$')))
@@ -158,15 +153,15 @@ class PluginlayoutField extends FormField
 						if (\count($files))
 						{
 							// Create the group for the template
-							$groups[$template->element] = array();
-							$groups[$template->element]['id'] = $this->id . '_' . $template->element;
-							$groups[$template->element]['text'] = Text::sprintf('JOPTION_FROM_TEMPLATE', $template->name);
+							$groups[$template->element]          = array();
+							$groups[$template->element]['id']    = $this->id . '_' . $template->element;
+							$groups[$template->element]['text']  = Text::sprintf('JOPTION_FROM_TEMPLATE', $template->name);
 							$groups[$template->element]['items'] = array();
 
 							foreach ($files as $file)
 							{
 								// Add an option to the template group
-								$value = basename($file, '.php');
+								$value                                 = basename($file, '.php');
 								$groups[$template->element]['items'][] = HTMLHelper::_('select.option', $template->element . ':' . $value, $value);
 							}
 						}

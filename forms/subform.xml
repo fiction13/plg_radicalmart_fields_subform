@@ -9,7 +9,7 @@
                     label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_LAYOUT"
                     description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_LAYOUT_DESC"
             >
-                <option value="">JSELECT</option>
+                <option value="">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_LAYOUT_SHOOSE</option>
                 <option value="list">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_LAYOUT_LIST</option>
                 <option value="table">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_LAYOUT_TABLE</option>
             </field>
@@ -32,7 +32,6 @@
                             type="text"
                             label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_NAME"
                             description="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_NAME_DESC"
-                            required="true"
                     />
                     <field
                             name="type"
@@ -45,7 +44,6 @@
                         <option value="number">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_NUMBER</option>
                         <option value="text">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_TEXT</option>
                         <option value="textarea">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_TEXTAREA</option>
-                        <option value="custom">PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_FIELDNAME_TYPE_CUSTOM</option>
                     </field>
                     <field
                             name="filter"
@@ -100,7 +98,7 @@
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
-            <field name="display_product_as" type="subformlayout"
+            <field name="display_product_as" type="subform_layout"
                    label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_DISPLAY_PRODUCT_AS"
                    default="list"
                    class="form-select"
@@ -117,7 +115,7 @@
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>
             </field>
-            <field name="display_products_as" type="subformlayout"
+            <field name="display_products_as" type="subform_layout"
                    label="PLG_RADICALMART_FIELDS_SUBFORM_PARAMS_DISPLAY_PRODUCTS_AS"
                    default="list"
                    class="form-select"

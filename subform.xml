@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   RadicalMart Fields - Subform
+  ~ @version   __DEPLOY_VERSION__
+  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
+  ~ @copyright Copyright (c) 2024 Fictionlabs. All rights reserved.
+  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+  ~ @link      https://fictionlabs.ru/
+  -->
 
 <extension type="plugin" group="radicalmart_fields" method="upgrade">
 	<name>PLG_RADICALMART_FIELDS_SUBFORM</name>
 	<creationDate>June 2022</creationDate>
     <author>Dmitriy Vasyukov</author>
-    <copyright>Copyright (C) 2005 - 2022 Open Source Matters. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2005 - 2025 Open Source Matters. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>info@fictionlabs.ru</authorEmail>
     <authorUrl>https://fictionlabs.ru</authorUrl>
@@ -32,4 +40,11 @@
 	<layouts destination="plugins/radicalmart_fields/subform" folder="layouts">
 		<folder>display</folder>
 	</layouts>
+
+	<!-- Update server -->
+    <updateservers>
+        <server type="extension" priority="1" name="RadicalMart Fields: Subform">
+            https://sovmart.ru/update?element=plg_radicalmart_fields_subform
+        </server>
+    </updateservers>
 </extension>

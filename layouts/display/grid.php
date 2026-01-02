@@ -16,29 +16,28 @@ extract($displayData);
  * Layout variables
  * -----------------
  *
- * @var  object $field Field data object.
- * @var  array $values
+ * @var  object $field  Field data object.
+ * @var  array  $values Array of values
+ * @var  array  $labels Array of labels
  *
  */
 
 ?>
 
 <?php if (!empty($values)) : ?>
-	<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
 		<?php foreach ($values as $value) : ?>
-
 			<?php if ($value) : ?>
 				<div class="col">
-					<?php foreach ($value as $val) : ?>
+					<?php foreach ($value as $key => $val) : ?>
 						<div class="card">
 							<div class="card-body">
-								<?php echo $val; ?>
+								<?php echo $labels[$key] . ': ' ?? ''?><?php echo $val; ?>
 							</div>
 						</div>
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
-
 		<?php endforeach; ?>
-	</div>
+    </div>
 <?php endif; ?>
